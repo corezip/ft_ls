@@ -28,55 +28,6 @@ void				ft_swapchar(char **a, char **b)
 	*b = ft_strdup(c);
 }
 
-int					ft_lendir_r(t_top *x, char *path)
-{
-	struct dirent	*pdirent;
-	DIR				*pdir;
-	int				i;
-
-	pdir = opendir(path);
-	i = 0;
-	while ((pdirent = readdir(pdir)) != NULL)
-	{
-		if (pdirent->d_name[0] != '.' && (x->flag.a == 0 || x->flag.a == 1))
-			i++;
-		else if(pdirent->d_name[0] == '.' && x->flag.a >= 1)
-			i++;
-	}
-	closedir(pdir);
-	return (i);
-}
-
-char				**ft_make_matrix_r(int size, t_top *x, char *path)
-{
-	struct dirent	*pdirent;
-	DIR				*pdir;
-	int				i;
-	char			**matrix;
-	char			**tmp;
-
-	matrix = (char **)malloc(sizeof(char *) * (size + 1));
-	// printf("\nmake matrix: %s\n", path);
-	pdir = opendir(path);
-	i = 0;
-	while ((pdirent = readdir(pdir)) != NULL)
-	{
-		if (pdirent->d_name[0] != '.' && (x->flag.a == 0 || x->flag.a == 1))
-		{
-			matrix[i] = ft_strdup(pdirent->d_name);
-			i++;
-		}
-		else if(pdirent->d_name[0] == '.' && x->flag.a >= 1)
-		{
-			matrix[i] = ft_strdup(pdirent->d_name);
-			i++;
-		}
-	}
-	matrix[i] = NULL;
-	closedir(pdir);
-	return (matrix);
-}
-
 char				**ft_make_matrix(int size, t_top *x, char* path)
 {
 	struct dirent	*pdirent;

@@ -39,6 +39,35 @@ void				print_blocks_size(t_top *x, char* path)
 	closedir(pdir);
 }
 
+int		print_value_recu(char *file, char* path)
+{
+	char date[36];
+	struct stat fileStat;
+	struct passwd *pw;
+	struct group  *gr;
+	char *tmp;
+
+	path = ft_strjoin(path, "/");
+	tmp = ft_strjoin(path, file);
+	stat(tmp, &fileStat);
+	pw = getpwuid(fileStat.st_uid);
+	gr = getgrgid(fileStat.st_gid);
+	ft_printf((S_ISDIR(fileStat.st_mode)) ? "d" : "-");
+	ft_printf((fileStat.st_mode & S_IRUSR) ? "r" : "-");
+	ft_printf((fileStat.st_mode & S_IWUSR) ? "w" : "-");
+	ft_printf((fileStat.st_mode & S_IXUSR) ? "x" : "-");
+	ft_printf((fileStat.st_mode & S_IRGRP) ? "r" : "-");
+	ft_printf((fileStat.st_mode & S_IWGRP) ? "w" : "-");
+	ft_printf((fileStat.st_mode & S_IXGRP) ? "x" : "-");
+	ft_printf((fileStat.st_mode & S_IROTH) ? "r" : "-");
+	ft_printf((fileStat.st_mode & S_IWOTH) ? "w" : "-");
+	ft_printf((fileStat.st_mode & S_IXOTH) ? "x" : "-");
+	ft_printf("  %d %s  %s %7d ", fileStat.st_nlink, pw->pw_name,
+		gr->gr_name, fileStat.st_size);
+	ft_printf("%s %s\n", ft_strsub(ctime(&fileStat.st_ctime), 4, 12), file);
+	return (fileStat.st_blocks);
+}
+
 int		print_value_ls(char *file, char* path)
 {
 	char date[36];
@@ -68,53 +97,12 @@ int		print_value_ls(char *file, char* path)
 
 void			print_basic(t_top *x)
 {
-	DIR		*dir;
-	struct	dirent *sd;
-	struct	stat buf;
+	char		**matrix;
 
-	dir = opendir(".");
-	if (dir == NULL)
-		ft_printf("no tiene ni madres!\n");
-	while ((sd = readdir(dir)) != NULL)
-	{
-		if (find_newline(sd->d_name))
-			x->type.i = 0;
-		else
-		{
-			stat(sd->d_name, &buf);
-			ft_printf("%s\n", sd->d_name);
-		}
-	}
-}
-
-void			print_l(t_top *x)
-{
-	char **matrix;
-
-	x->type.size = 0;
-	x->type.flag = 1;
 	x->type.j = 0;
-	if (x->flag.rr >= 1)
-	{
-		recurtion_mexa(".", x, 0);
-		return ;
-	}
-	print_blocks_size(x, ".");
 	x->type.i = ft_lendir(x, ".");
 	matrix = ft_make_matrix(x->type.i, x, ".");
-	comp_matrix(x, matrix, ".");
+	comp_matrix_r(x, matrix);
 	while(matrix[++x->type.j] != NULL)
-		print_value_ls(matrix[x->type.j], ".");
-}
-
-void				ft_print_matrix(char **matrix)
-{
-	int			j;
-
-	j = 0;
-	while (matrix[j] != NULL)
-	{
-		ft_printf("%10s", matrix[j]);
-		j++;
-	}
+		ft_printf("%s\n", matrix[x->type.j]);
 }

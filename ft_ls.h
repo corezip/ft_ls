@@ -75,7 +75,7 @@ typedef	struct			s_top
 }						t_top;
 
 void					print_basic(t_top *x);
-void					print_l(t_top *x);
+void					ls_menu(t_top *x);
 char					*get_time(char *dst, char *ori);
 char					*cut_time(char *str, int start, int end);
 char					*type_converter(t_top *x);
@@ -92,6 +92,7 @@ int						ft_lendir(t_top *x, char *path);
 int						print_value_ls(char *file, char *path);
 void					print_blocks_size(t_top *x, char* path);
 void					comp_matrix(t_top *x, char **matrix, char* path);
+int						print_value_recu(char *file, char* path);
 /*
 */
 int						ft_lendir_r(t_top *x, char *path);
