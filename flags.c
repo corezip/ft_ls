@@ -27,7 +27,20 @@ int			flag_on(t_top *x)
 	return (0);
 }
 
-void		start_flag(char **argv, t_top *x)
+// void		get_file(char **argv, t_top *x, int argc)
+// {
+// 	char **files;
+// 	int i;
+
+// 	i = 0;
+// 	files = (char**)malloc(sizeof(char*) * argc);
+// 	while (argv[i])
+// 	{
+// 		files[i] = 
+// 	}
+// }
+
+void		start_flag(char **argv, t_top *x, int argc)
 {
 	int i;
 	int j;
@@ -51,4 +64,6 @@ void		start_flag(char **argv, t_top *x)
 			j = 1;
 		}
 	}
+	// else
+	// 	get_file(argv, x, argc);
 }

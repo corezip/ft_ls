@@ -40,7 +40,7 @@ char				**ft_make_matrix(int size, t_top *x, char* path)
 	i = 0;
 	while ((pdirent = readdir(pdir)) != NULL)
 	{
-		if (pdirent->d_name[0] != '.' && (x->flag.a == 0 || x->flag.a == 1))
+		if (pdirent->d_name[0] != '.' && (x->flag.a == 0 || x->flag.a >= 1))
 		{
 			matrix[i] = ft_strdup(pdirent->d_name);
 			i++;
@@ -66,7 +66,7 @@ int					ft_lendir(t_top *x, char *path)
 	i = 0;
 	while ((pdirent = readdir(pdir)) != NULL)
 	{
-		if (pdirent->d_name[0] != '.' && (x->flag.a == 0 || x->flag.a == 1))
+		if (pdirent->d_name[0] != '.' && (x->flag.a == 0 || x->flag.a >= 1))
 			i++;
 		else if(pdirent->d_name[0] == '.' && x->flag.a >= 1)
 			i++;

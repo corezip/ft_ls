@@ -14,53 +14,39 @@
 
 void			comp_matrix_r(t_top *x, char **matrix)
 {
-	while (x->type.flag != 0)
+	if (x->flag.r >= 1)
+		recursion_comp_rev(x, matrix);
+	else
 	{
-		x->type.flag = 0;
-		while(matrix[x->type.j] != NULL)
+		while (x->type.flag != 0)
 		{
-			if (matrix[x->type.j + 1] && ft_strcmp(matrix[x->type.j],
-				matrix[x->type.j + 1]) > 0)
+			x->type.flag = 0;
+			while(matrix[x->type.j] != NULL)
 			{
-				ft_swapchar(&matrix[x->type.j], &matrix[x->type.j + 1]);
-				x->type.flag++;
+				if (matrix[x->type.j + 1] && ft_strcmp(matrix[x->type.j],
+					matrix[x->type.j + 1]) > 0)
+				{
+					ft_swapchar(&matrix[x->type.j], &matrix[x->type.j + 1]);
+					x->type.flag++;
+				}
+				x->type.j++;
 			}
-			x->type.j++;
+			x->type.j = 0;
 		}
-		x->type.j = 0;
+		x->type.j = -1;
+		while(matrix[++x->type.j] != NULL)
+			ft_printf("%s\n", matrix[x->type.j]);
 	}
-	x->type.j = -1;
-	while(matrix[++x->type.j] != NULL)
-		ft_printf("%s\n", matrix[x->type.j]);
 }
 
-void			comp_matrix(t_top *x, char **matrix, char* path)
+void			comp_matrix(t_top *x, char **matrix, char *path)
 {
 	x->type.flag = 1;
 	x->type.j = 0;
-	while (x->type.flag != 0)
-	{
-		x->type.flag = 0;
-		while(matrix[x->type.j] != NULL)
-		{
-			if (matrix[x->type.j + 1] && ft_strcmp(matrix[x->type.j],
-				matrix[x->type.j + 1]) > 0)
-			{
-				ft_swapchar(&matrix[x->type.j], &matrix[x->type.j + 1]);
-				x->type.flag++;
-			}
-			x->type.j++;
-		}
-		x->type.j = 0;
-	}
-	x->type.j = -1;
-	while(matrix[++x->type.j] != NULL)
-	{
-		if (x->flag.rr >= 1)
-			print_value_recu(matrix[x->type.j], path);
-		else
-			print_value_ls(matrix[x->type.j], path);
-	}
+	if (x->flag.r >= 1)
+		comp_rev(x, matrix, path);
+	else
+		comp_normal(x, matrix, path);
 }
 
 void			recurtion_mexa(char *path, t_top *x, int i)

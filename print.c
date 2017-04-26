@@ -95,14 +95,30 @@ int		print_value_ls(char *file, char* path)
 	return (fileStat.st_blocks);
 }
 
-void			print_basic(t_top *x)
+void			print_basic(t_top *x, char *path)
 {
 	char		**matrix;
 
+	x->type.flag = 1;
 	x->type.j = 0;
-	x->type.i = ft_lendir(x, ".");
-	matrix = ft_make_matrix(x->type.i, x, ".");
-	comp_matrix_r(x, matrix);
-	while(matrix[++x->type.j] != NULL)
-		ft_printf("%s\n", matrix[x->type.j]);
+	x->type.i = ft_lendir(x, path);
+	matrix = ft_make_matrix(x->type.i, x, path);
+	while (x->type.flag != 0)
+		{
+			x->type.flag = 0;
+			while(matrix[x->type.j] != NULL)
+			{
+				if (matrix[x->type.j + 1] && ft_strcmp(matrix[x->type.j],
+					matrix[x->type.j + 1]) > 0)
+				{
+					ft_swapchar(&matrix[x->type.j], &matrix[x->type.j + 1]);
+					x->type.flag++;
+				}
+				x->type.j++;
+			}
+			x->type.j = 0;
+		}
+		x->type.j = -1;
+		while(matrix[++x->type.j] != NULL)
+			ft_printf("%s\n", matrix[x->type.j]);
 }

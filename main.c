@@ -35,20 +35,20 @@ void			ls_menu(t_top *x)
 int				main(int argc, char *argv[])
 {
 	t_top	*x;
-
+	
 	x =(t_top*)malloc(sizeof(t_top));
 	if (argc >= 1)
 	{
 		if (argc == 1)
-			print_basic(x);
+			print_basic(x, ".");
 		else if (argc >= 2)
 		{
-			start_flag(argv, x);
+			start_flag(argv, x, argc);
 			if (flag_on(x))
 				ls_menu(x);
 			else
-				ft_printf("ft_ls: illegal option -- %c\nusage: ft_ls \
-					[-Ralrt] [file ...]\n", argv[1][1]);
+				ft_printf("ft_ls: illegal option -- %c\nusage: ft_ls" 
+					" [-Ralrt] [file ...]\n", argv[1][1]);
 		}
 	}
 	return (0);
