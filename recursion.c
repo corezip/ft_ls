@@ -14,6 +14,8 @@
 
 void			comp_matrix_r(t_top *x, char **matrix)
 {
+	x->type.flag = 1;
+	x->type.j = 0;
 	if (x->flag.r >= 1)
 		recursion_comp_rev(x, matrix);
 	else
@@ -57,7 +59,7 @@ void			recurtion_mexa(char *path, t_top *x, int i)
 
 	x->type.i = ft_lendir(x, path);
 	matrix = ft_make_matrix(x->type.i, x, path);
-	if (x->flag.l >= 1 || x->flag.file >= 1)
+	if (x->flag.l >= 1 || (x->flag.file >= 1 && x->flag.l >= 1))
 		comp_matrix(x, matrix, path);
 	else
 		comp_matrix_r(x, matrix);

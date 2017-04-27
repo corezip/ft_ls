@@ -23,10 +23,11 @@ void				print_blocks_size(t_top *x, char* path)
 	i = 0;
 	while ((pdirent = readdir(pdir)) != NULL)
 	{
+		
 		stat(pdirent->d_name, &buff);
+		// ft_printf(">>>%d<<<%d>>>%s\n", i, x->type.size, pdirent->d_name);
 		if (pdirent->d_name[0] != '.' && (x->flag.a == 0 || x->flag.a == 1))
-		{
-			x->type.size += buff.st_blocks;
+		{			x->type.size += buff.st_blocks;
 			i++;
 		}
 		else if(pdirent->d_name[0] == '.' && x->flag.a >= 1)
@@ -79,7 +80,6 @@ int		print_value_ls(char *file, char* path)
 		return 1;
 	pw = getpwuid(fileStat.st_uid);
 	gr = getgrgid(fileStat.st_gid);
-	ft_printf((S_ISLNK(fileStat.st_mode)) ? "l" : "-");
 	ft_printf((S_ISDIR(fileStat.st_mode)) ? "d" : "-");
 	ft_printf((fileStat.st_mode & S_IRUSR) ? "r" : "-");
 	ft_printf((fileStat.st_mode & S_IWUSR) ? "w" : "-");
