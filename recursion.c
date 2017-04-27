@@ -23,7 +23,7 @@ void			comp_matrix_r(t_top *x, char **matrix)
 		while (x->type.flag != 0)
 		{
 			x->type.flag = 0;
-			while(matrix[x->type.j] != NULL)
+			while (matrix[x->type.j] != NULL)
 			{
 				if (matrix[x->type.j + 1] && ft_strcmp(matrix[x->type.j],
 					matrix[x->type.j + 1]) > 0)
@@ -36,7 +36,7 @@ void			comp_matrix_r(t_top *x, char **matrix)
 			x->type.j = 0;
 		}
 		x->type.j = -1;
-		while(matrix[++x->type.j] != NULL)
+		while (matrix[++x->type.j] != NULL)
 			ft_printf("%s\n", matrix[x->type.j]);
 	}
 }
@@ -53,7 +53,7 @@ void			comp_matrix(t_top *x, char **matrix, char *path)
 
 void			recurtion_mexa(char *path, t_top *x, int i)
 {
-	struct stat	fileStat;
+	struct stat	filestat;
 	char		**matrix;
 	char		*tmp;
 
@@ -67,13 +67,13 @@ void			recurtion_mexa(char *path, t_top *x, int i)
 	{
 		tmp = ft_strjoin(path, "/");
 		tmp = ft_strjoin(tmp, matrix[i]);
-		lstat(tmp, &fileStat);
-		if(((S_ISDIR(fileStat.st_mode) && ft_strcmp(matrix[i], "."))) &&
-			((S_ISDIR(fileStat.st_mode) && ft_strcmp(matrix[i], ".."))))
+		lstat(tmp, &filestat);
+		if (((S_ISDIR(filestat.st_mode) && ft_strcmp(matrix[i], "."))) &&
+			((S_ISDIR(filestat.st_mode) && ft_strcmp(matrix[i], ".."))))
 		{
-				matrix[i] = ft_strdup(tmp);
-				ft_printf("\n%s\n", matrix[i]);
-				recurtion_mexa(matrix[i], x, 0);
+			matrix[i] = ft_strdup(tmp);
+			ft_printf("\n%s\n", matrix[i]);
+			recurtion_mexa(matrix[i], x, 0);
 		}
 		i++;
 	}

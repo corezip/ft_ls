@@ -21,23 +21,23 @@ void			print_r(t_top *x, char *path)
 	x->type.i = ft_lendir(x, path);
 	matrix = ft_make_matrix(x->type.i, x, path);
 	while (x->type.flag != 0)
+	{
+		x->type.flag = 0;
+		while (matrix[x->type.j] != NULL)
 		{
-			x->type.flag = 0;
-			while(matrix[x->type.j] != NULL)
-			{
-				if (matrix[x->type.j + 1] && ft_strcmp(matrix[x->type.j],
+			if (matrix[x->type.j + 1] && ft_strcmp(matrix[x->type.j],
 					matrix[x->type.j + 1]) < 0)
-				{
-					ft_swapchar(&matrix[x->type.j], &matrix[x->type.j + 1]);
-					x->type.flag++;
-				}
-				x->type.j++;
+			{
+				ft_swapchar(&matrix[x->type.j], &matrix[x->type.j + 1]);
+				x->type.flag++;
 			}
-			x->type.j = 0;
+			x->type.j++;
 		}
-		x->type.j = -1;
-		while(matrix[++x->type.j] != NULL)
-			ft_printf("%s\n", matrix[x->type.j]);
+		x->type.j = 0;
+	}
+	x->type.j = -1;
+	while (matrix[++x->type.j] != NULL)
+		ft_printf("%s\n", matrix[x->type.j]);
 }
 
 void			ls_menu(t_top *x, char *path)
@@ -68,10 +68,10 @@ void			ls_menu(t_top *x, char *path)
 	comp_matrix(x, matrix, path);
 }
 
-int				main(int argc, char *argv[])
+int				main(int argc, char **argv)
 {
 	t_top		*x;
-	
+
 	x = (t_top*)malloc(sizeof(t_top));
 	if (argc >= 1)
 	{
@@ -83,9 +83,10 @@ int				main(int argc, char *argv[])
 			if (flag_on(x) && x->flag.file <= 0)
 				ls_menu(x, ".");
 			else if (x->flag.file == 0)
-				ft_printf("ft_ls: illegal option -- %c\nusage: ft_ls" 
+				ft_printf("ft_ls: illegal option -- %c\nusage: ft_ls"
 					" [-Ralrt] [file ...]\n", argv[1][1]);
 		}
 	}
-	return (0);
+	ft_memdel((void**)&x);
+	return (1);
 }

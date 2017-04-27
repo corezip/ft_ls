@@ -29,34 +29,35 @@ int			flag_on(t_top *x)
 
 void		get_file2(char *file, t_top *x)
 {
-	struct stat fileStat;
+	struct stat filestat;
 
-	if (stat(file, &fileStat) < 0)
+	if (stat(file, &filestat) < 0)
 		perror("Error: ");
-	if (S_ISDIR(fileStat.st_mode))
-		{
-			x->flag.rr = 1;
-			recurtion_mexa(file, x, 0);
-		}
-		else
-			print_value_ls(file, file);
+	if (S_ISDIR(filestat.st_mode))
+	{
+		x->flag.rr = 1;
+		recurtion_mexa(file, x, 0);
+	}
+	else
+		print_value_ls(file);
 }
 
 void		get_file(char *file, t_top *x)
 {
-	struct stat fileStat;
+	struct stat filestat;
 
-	if (stat(file, &fileStat) < 0)
+	if (stat(file, &filestat) < 0)
 		perror("Error: ");
 	x->flag.file = 1;
 	if (x->flag.l >= 1)
 	{
-		print_blocks_size(x, file);
+		if (S_ISDIR(filestat.st_mode))
+			print_blocks_size(x, file);
 		get_file2(file, x);
 	}
 	else
 	{
-		if (S_ISDIR(fileStat.st_mode))
+		if (S_ISDIR(filestat.st_mode))
 		{
 			x->flag.rr = 1;
 			recurtion_mexa(file, x, 0);
@@ -78,6 +79,7 @@ void		start_flag(char **argv, t_top *x)
 		{
 			if (argv[i][0] == '-')
 			{
+				char *f = argv[i];
 				while (argv[i][++j])
 				{
 					x->flag.l += (argv[i][j] == 'l') ? 1 : 0;
@@ -89,7 +91,7 @@ void		start_flag(char **argv, t_top *x)
 			}
 			else
 				get_file(argv[i], x);
-			j = 1;
+			j = 0;
 			i++;
 		}
 	}

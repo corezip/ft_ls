@@ -26,14 +26,14 @@
 # include <wchar.h>
 # include <fcntl.h>
 
-typedef struct			s_list
+typedef struct		s_list
 {
 	void			*content;
 	size_t			content_size;
 	struct s_list	*next;
-}						t_list;
+}					t_list;
 
-typedef	struct			s_pres
+typedef	struct		s_pres
 {
 	int				space;
 	int				presition;
@@ -41,55 +41,55 @@ typedef	struct			s_pres
 	int				calc;
 	int				negative;
 	char			str[100];
-}						t_pres;
+}					t_pres;
 
-typedef	struct			s_main
+typedef	struct		s_main
 {
 	int				count;
 	int				len;
 	char			*format;
-}						t_main;
+}					t_main;
 
-typedef	struct			s_u
+typedef	struct		s_u
 {
 	unsigned int	value;
 	int				count;
 	int				flag;
 	long int		i;
-}						t_u;
+}					t_u;
 
-typedef	struct			s_ld
+typedef	struct		s_ld
 {
 	long long		value;
 	long long		count;
-}						t_ld;
+}					t_ld;
 
-typedef	struct			s_d
+typedef	struct		s_d
 {
 	int				value;
 	int				count;
 	int				flag;
 	int				len;
 	char			*str;
-}						t_d;
+}					t_d;
 
-typedef	struct			s_s
+typedef	struct		s_s
 {
 	char			*value;
 	int				len;
 	int				count;
-}						t_s;
+}					t_s;
 
-typedef	struct			s_o
+typedef	struct		s_o
 {
 	int				remainder;
 	int				octal;
 	int				i;
 	int				n;
 	int				x;
-}						t_o;
+}					t_o;
 
-typedef	struct			s_x
+typedef	struct		s_x
 {
 	long int		decimalnumber;
 	long int		remainder;
@@ -100,17 +100,17 @@ typedef	struct			s_x
 	int				temp;
 	char			*hexadecimalnumber;
 	char			*hexa;
-}						t_x;
+}					t_x;
 
-typedef	struct			s_zero
+typedef	struct		s_zero
 {
 	int				ilen;
 	char			convert[20];
 	char			*tmp;
 	int				num;
-}						t_zero;
+}					t_zero;
 
-typedef	struct			s_head
+typedef	struct		s_head
 {
 	t_d				head_d;
 	t_s				head_s;
@@ -120,8 +120,7 @@ typedef	struct			s_head
 	t_zero			head_zero;
 	t_pres			head_pr;
 	t_ld			head_ll;
-}						t_head;
-
+}					t_head;
 
 void				ft_putchar(int c);
 void				ft_bzero(void *s, size_t n);

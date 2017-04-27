@@ -28,7 +28,7 @@ void				ft_swapchar(char **a, char **b)
 	*b = ft_strdup(c);
 }
 
-char				**ft_make_matrix(int size, t_top *x, char* path)
+char				**ft_make_matrix(int size, t_top *x, char *path)
 {
 	struct dirent	*pdirent;
 	DIR				*pdir;
@@ -45,7 +45,7 @@ char				**ft_make_matrix(int size, t_top *x, char* path)
 			matrix[i] = ft_strdup(pdirent->d_name);
 			i++;
 		}
-		else if(pdirent->d_name[0] == '.' && x->flag.a >= 1)
+		else if (pdirent->d_name[0] == '.' && x->flag.a >= 1)
 		{
 			matrix[i] = ft_strdup(pdirent->d_name);
 			i++;
@@ -68,7 +68,7 @@ int					ft_lendir(t_top *x, char *path)
 	{
 		if (pdirent->d_name[0] != '.' && (x->flag.a == 0 || x->flag.a >= 1))
 			i++;
-		else if(pdirent->d_name[0] == '.' && x->flag.a >= 1)
+		else if (pdirent->d_name[0] == '.' && x->flag.a >= 1)
 			i++;
 	}
 	closedir(pdir);
