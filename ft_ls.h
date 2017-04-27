@@ -60,6 +60,7 @@ typedef	struct			s_flag
 	int					a;
 	int					r;
 	int					t;
+	int					file;
 }						t_flag;
 
 /*
@@ -75,7 +76,7 @@ typedef	struct			s_top
 }						t_top;
 
 void					print_basic(t_top *x, char *path);
-void					ls_menu(t_top *x);
+void					ls_menu(t_top *x, char *path);
 char					*get_time(char *dst, char *ori);
 char					*cut_time(char *str, int start, int end);
 char					*type_converter(t_top *x);

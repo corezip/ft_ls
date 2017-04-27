@@ -27,18 +27,26 @@ int			flag_on(t_top *x)
 	return (0);
 }
 
-// void		get_file(char **argv, t_top *x, int argc)
-// {
-// 	char **files;
-// 	int i;
+void		get_file(char *file, t_top *x, int argc)
+{
+	struct stat fileStat;
 
-// 	i = 0;
-// 	files = (char**)malloc(sizeof(char*) * argc);
-// 	while (argv[i])
-// 	{
-// 		files[i] = 
-// 	}
-// }
+	if (stat(file, &fileStat) < 0)
+		perror("Error: ");
+	x->flag.file = 1;
+	if (x->flag.l >= 1)
+	{
+		if (S_ISDIR(fileStat.st_mode))
+		{
+			printf("%s\n", "hola bebe");
+			recurtion_mexa(file, x, 0);
+		}
+		else
+			print_value_ls(file, file);
+	}
+	else
+		ft_printf("%s\n", file);
+}
 
 void		start_flag(char **argv, t_top *x, int argc)
 {
@@ -47,23 +55,25 @@ void		start_flag(char **argv, t_top *x, int argc)
 
 	i = 1;
 	j = 1;
-	if (argv[i][0] == '-')
 	{
 		while (argv[i])
 		{
-			while (argv[i][j])
+			if (argv[i][0] == '-')
 			{
-				x->flag.l += (argv[i][j] == 'l') ? 1 : 0;
-				x->flag.rr += (argv[i][j] == 'R') ? 1 : 0;
-				x->flag.a += (argv[i][j] == 'a') ? 1 : 0;
-				x->flag.r += (argv[i][j] == 'r') ? 1 : 0;
-				x->flag.t += (argv[i][j] == 't') ? 1 : 0;
-				j++;
+				while (argv[i][j])
+				{
+					x->flag.l += (argv[i][j] == 'l') ? 1 : 0;
+					x->flag.rr += (argv[i][j] == 'R') ? 1 : 0;
+					x->flag.a += (argv[i][j] == 'a') ? 1 : 0;
+						x->flag.r += (argv[i][j] == 'r') ? 1 : 0;
+					x->flag.t += (argv[i][j] == 't') ? 1 : 0;
+					j++;
+				}
 			}
-			i++;
+			else
+				get_file(argv[i], x, argc);
 			j = 1;
+			i++;
 		}
 	}
-	// else
-	// 	get_file(argv, x, argc);
 }

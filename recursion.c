@@ -57,7 +57,7 @@ void			recurtion_mexa(char *path, t_top *x, int i)
 
 	x->type.i = ft_lendir(x, path);
 	matrix = ft_make_matrix(x->type.i, x, path);
-	if (x->flag.l >= 1)
+	if (x->flag.l >= 1 || x->flag.file >= 1)
 		comp_matrix(x, matrix, path);
 	else
 		comp_matrix_r(x, matrix);

@@ -41,7 +41,7 @@ void				print_blocks_size(t_top *x, char* path)
 
 int		print_value_recu(char *file, char* path)
 {
-	char date[36];
+	char date[40];
 	struct stat fileStat;
 	struct passwd *pw;
 	struct group  *gr;
@@ -49,7 +49,7 @@ int		print_value_recu(char *file, char* path)
 
 	path = ft_strjoin(path, "/");
 	tmp = ft_strjoin(path, file);
-	stat(tmp, &fileStat);
+	lstat(tmp, &fileStat);
 	pw = getpwuid(fileStat.st_uid);
 	gr = getgrgid(fileStat.st_gid);
 	ft_printf((S_ISDIR(fileStat.st_mode)) ? "d" : "-");
@@ -75,10 +75,11 @@ int		print_value_ls(char *file, char* path)
 	struct passwd *pw;
 	struct group  *gr;
 
-	if (stat(file, &fileStat) < 0)
+	if (lstat(file, &fileStat) < 0)
 		return 1;
 	pw = getpwuid(fileStat.st_uid);
 	gr = getgrgid(fileStat.st_gid);
+	ft_printf((S_ISLNK(fileStat.st_mode)) ? "l" : "-");
 	ft_printf((S_ISDIR(fileStat.st_mode)) ? "d" : "-");
 	ft_printf((fileStat.st_mode & S_IRUSR) ? "r" : "-");
 	ft_printf((fileStat.st_mode & S_IWUSR) ? "w" : "-");

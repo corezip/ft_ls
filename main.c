@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-void			ls_menu(t_top *x)
+void			ls_menu(t_top *x, char *path)
 {
 	char **matrix;
 
@@ -21,15 +21,14 @@ void			ls_menu(t_top *x)
 	x->type.j = 0;
 	if (x->flag.rr >= 1)
 	{
-		recurtion_mexa(".", x, 0);
+		recurtion_mexa(path, x, 0);
 		return ;
 	}
-	print_blocks_size(x, ".");
-	x->type.i = ft_lendir(x, ".");
-	matrix = ft_make_matrix(x->type.i, x, ".");
-	comp_matrix(x, matrix, ".");
-	while(matrix[++x->type.j] != NULL)
-		print_value_ls(matrix[x->type.j], ".");
+	print_blocks_size(x, path);
+	x->type.i = ft_lendir(x, path);
+	printf("%s\n", path);
+	matrix = ft_make_matrix(x->type.i, x, path);
+	comp_matrix(x, matrix, path);
 }
 
 int				main(int argc, char *argv[])
@@ -44,12 +43,31 @@ int				main(int argc, char *argv[])
 		else if (argc >= 2)
 		{
 			start_flag(argv, x, argc);
-			if (flag_on(x))
-				ls_menu(x);
-			else
+			if (flag_on(x) && x->flag.file <= 0)
+				ls_menu(x, ".");
+			else if (x->flag.file == 0)
 				ft_printf("ft_ls: illegal option -- %c\nusage: ft_ls" 
 					" [-Ralrt] [file ...]\n", argv[1][1]);
 		}
 	}
 	return (0);
 }
+
+// void			ls_menu(t_top *x, char *path)
+// {
+// 	char **matrix;
+
+// 	x->type.size = 0;
+// 	x->type.flag = 1;
+// 	x->type.j = 0;
+// 	if (x->flag.rr >= 1)
+// 	{
+// 		recurtion_mexa(path, x, 0);
+// 		return ;
+// 	}
+// 	print_blocks_size(x, path);
+// 	x->type.i = ft_lendir(x, path);
+// 	printf("%s\n", path);
+// 	matrix = ft_make_matrix(x->type.i, x, path);
+// 	comp_matrix(x, matrix, path);
+// }
