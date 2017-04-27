@@ -26,7 +26,6 @@ void			ls_menu(t_top *x, char *path)
 	}
 	print_blocks_size(x, path);
 	x->type.i = ft_lendir(x, path);
-	printf("%s\n", path);
 	matrix = ft_make_matrix(x->type.i, x, path);
 	comp_matrix(x, matrix, path);
 }

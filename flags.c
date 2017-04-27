@@ -38,7 +38,7 @@ void		get_file(char *file, t_top *x, int argc)
 	{
 		if (S_ISDIR(fileStat.st_mode))
 		{
-			printf("%s\n", "hola bebe");
+			x->flag.rr = 1;
 			recurtion_mexa(file, x, 0);
 		}
 		else
