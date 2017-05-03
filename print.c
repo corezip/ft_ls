@@ -12,6 +12,13 @@
 
 #include "ft_ls.h"
 
+/*
+** PRINT_BLOCKS_SIZE
+** ---------------------------------------------------------------------------
+** Esta funcion obtendra el tamaño de los bloques que utiliza cada archivo.
+** Toma en cuenta la opcion de contar con archivos ocultos o sin ellos.
+*/
+
 void				print_blocks_size(t_top *x, char *path)
 {
 	struct dirent	*pdirent;
@@ -20,18 +27,16 @@ void				print_blocks_size(t_top *x, char *path)
 	struct stat		buff;
 
 	pdir = opendir(path);
-	ft_printf("%s\n", path);
 	i = 0;
 	while ((pdirent = readdir(pdir)) != NULL)
 	{
-		ft_printf("%s  %d\n", pdirent->d_name, buff.st_blocks);
 		stat(pdirent->d_name, &buff);
-		if (pdirent->d_name[0] != '.' && (x->flag.a == 1))
+		if (pdirent->d_name[0] != '.' && x->flag.a >= 1)
 		{
 			x->type.size += buff.st_blocks;
 			i++;
 		}
-		else if (pdirent->d_name[0] == '.' && x->flag.a >= 1)
+		else if (pdirent->d_name[0] == '.' && (x->flag.a == 0 || x->flag.a >= 1))
 		{
 			x->type.size += buff.st_blocks;
 			i++;
@@ -40,6 +45,15 @@ void				print_blocks_size(t_top *x, char *path)
 	ft_printf("Total: %d\n", x->type.size);
 	closedir(pdir);
 }
+
+/*
+** PRINT_VALUE_RECU
+** ---------------------------------------------------------------------------
+** Esta funcion hara la impresion de los archivos con la flag -R -l activa,
+** hara la union del file junto con el path, dando como resultado la dirrecion
+** correcta, para poder buscar el archivo dentro de esa direccion e imprimir
+** toda su informacion.
+*/
 
 int					print_value_recu(char *file, char *path)
 {
@@ -53,6 +67,7 @@ int					print_value_recu(char *file, char *path)
 	lstat(tmp, &filestat);
 	pw = getpwuid(filestat.st_uid);
 	gr = getgrgid(filestat.st_gid);
+	// ft_printf("Path: %s\n ", tmp);
 	ft_printf((S_ISDIR(filestat.st_mode)) ? "d" : "-");
 	ft_printf((filestat.st_mode & S_IRUSR) ? "r" : "-");
 	ft_printf((filestat.st_mode & S_IWUSR) ? "w" : "-");
@@ -68,6 +83,14 @@ int					print_value_recu(char *file, char *path)
 	ft_printf("%s %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12), file);
 	return (filestat.st_blocks);
 }
+
+/*
+** PRINT_VALUE_LS
+** ---------------------------------------------------------------------------
+** Esta funcion es la impresion para las flag -l o que contenga -l sin haber
+** recibido un file o carpeta por argumento. en caso de recibir como
+** argumento un file o directorio se usara PRINT_VALUE_RECU
+*/
 
 int					print_value_ls(char *file)
 {
@@ -94,6 +117,13 @@ int					print_value_ls(char *file)
 	ft_printf("%s %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12), file);
 	return (filestat.st_blocks);
 }
+
+/*
+** PRINT_BASIC
+** ---------------------------------------------------------------------------
+** esta funcion imprimira en orden ASCII(A - Z) solo los nombres de los
+** archivos sin inforacion.
+*/
 
 void				print_basic(t_top *x, char *path)
 {

@@ -22,15 +22,14 @@
 # include "./libft/libft.h"
 
 /*
-**************************************************************************
+** ---------------------------------------------------------------------------
 ** *nums ---> contiene el valor convertido de los permisos ej. drwxr-xr-x.
 ** i y j ---> son simples contadores para los whiles o char*.
 ** size ---> es el tamaño en bytes de los archivos.
-** flag --> ??????
+** flag --> sirve para identificar si obtuvimos un file.
 ** mtime ---> Es la variable donde vamos a recibir el tiempo.
 ** new_time ---> Es la variable del tiempo ya recortado listo para imprimir.
 ** perm ---> es la variable para poder hacer la conversion de los permisos.
-**************************************************************************
 */
 
 typedef	struct			s_perm
@@ -40,17 +39,11 @@ typedef	struct			s_perm
 	int					size;
 	int					num;
 	int					flag;
-	char				mtime[100];
-	char				*nums;
-	char				type[4];
-	char				perm[10];
-	char				*new_time;
 }						t_perm;
 
 /*
-**************************************************************************
+** ---------------------------------------------------------------------------
 ** Las flags sirven para saber si recibo "-".
-**************************************************************************
 */
 
 typedef	struct			s_flag
@@ -64,9 +57,8 @@ typedef	struct			s_flag
 }						t_flag;
 
 /*
-**************************************************************************
+** ---------------------------------------------------------------------------
 ** Estructura general.
-**************************************************************************
 */
 
 typedef	struct			s_top
@@ -95,5 +87,17 @@ void					print_especial(char *path, char **matrix, int i);
 void					recursion_comp_rev(t_top *x, char **matrix);
 void					comp_rev(t_top *x, char **matrix, char *path);
 void					comp_normal(t_top *x, char **matrix, char *path);
+void					flag_zero(t_top *x);
+void					print_l(t_top *x, char *path, char **matrix);
+void					ft_ls_t(t_top *x, char *path);
+void					comp_matrix_t(t_top *x, char **matrix,
+	char **times, char *path);
+void					comp_matrix_t_r(t_top *x, char **matrix,
+	char **times, char *path);
+char					**ft_catching_time(int size ,t_top *x, char **files, char *path);
+void					print_basic_t(t_top *x, char *path);
+void					print_basic_t_r(t_top *x, char **matrix, char **times);
+void					option_t(t_top *x, char *file, char *path);
+void					recurtion_mexa_t(char *path, t_top *x, int i);
 
 #endif

@@ -12,8 +12,18 @@
 
 #include "ft_ls.h"
 
+/*
+** FLAG_ON
+** ---------------------------------------------------------------------------
+** Esta funcion solo revisara si alguna flag esta encendida para dar acceso a
+** LS_MENU
+*/
+
 int			flag_on(t_top *x)
 {
+	x->type.size = 0;
+	x->type.flag = 1;
+	x->type.j = 0;
 	if (x->flag.l > 0)
 		return (1);
 	else if (x->flag.rr > 0)
@@ -26,6 +36,14 @@ int			flag_on(t_top *x)
 		return (1);
 	return (0);
 }
+
+/*
+** GET_FILE2
+** ---------------------------------------------------------------------------
+** Extencion de la funcion get_file.
+** Esta funcion simplemente obtiene el nombre de la file o directorio que
+** vamos a analizar junto con las flags en caso de tener activa alguna.
+*/
 
 void		get_file2(char *file, t_top *x)
 {
@@ -41,6 +59,13 @@ void		get_file2(char *file, t_top *x)
 	else
 		print_value_ls(file);
 }
+
+/*
+** GET_FILE
+** ---------------------------------------------------------------------------
+** Esta funcion simplemente obtiene el nombre de la file o directorio que
+** vamos a analizar junto con las flags en caso de tener activa alguna.
+*/
 
 void		get_file(char *file, t_top *x)
 {
@@ -67,6 +92,13 @@ void		get_file(char *file, t_top *x)
 	}
 }
 
+/*
+** START_FLAG
+** ---------------------------------------------------------------------------
+** Esta fucion inicializa la estructura FLAG para saber que operaciones vamos
+** a realizar, si o que archivos o directorios vamos a identificar.
+*/
+
 void		start_flag(char **argv, t_top *x)
 {
 	int i;
@@ -79,7 +111,6 @@ void		start_flag(char **argv, t_top *x)
 		{
 			if (argv[i][0] == '-')
 			{
-				char *f = argv[i];
 				while (argv[i][++j])
 				{
 					x->flag.l += (argv[i][j] == 'l') ? 1 : 0;
@@ -91,8 +122,28 @@ void		start_flag(char **argv, t_top *x)
 			}
 			else
 				get_file(argv[i], x);
-			j = 0;
 			i++;
+			j = 1;
 		}
+		int z = x->flag.l;
+		int y = x->flag.rr;
+		z = x->flag.a;
+		y = x->flag.r;
+		z = x->flag.t;
 	}
+}
+
+/*
+** FLAG_ZERo
+** ---------------------------------------------------------------------------
+** Funcion para inicializar valores en 0 y evitar problemas.
+*/
+
+void		flag_zero(t_top *x)
+{
+	x->flag.l = 0;
+	x->flag.rr = 0;
+	x->flag.r = 0;
+	x->flag.a = 0;
+	x->flag.t = 0;
 }

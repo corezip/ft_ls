@@ -12,12 +12,12 @@
 
 #include "ft_ls.h"
 
-int					find_newline(char *str)
-{
-	if (str[0] == '.')
-		return (1);
-	return (0);
-}
+/*
+** FT_SWAPCHAR
+** ---------------------------------------------------------------------------
+** Esta funcion hara un simple cambio de nombres en la matrix donde se
+** almacenan los nombres de los archivos.
+*/
 
 void				ft_swapchar(char **a, char **b)
 {
@@ -27,6 +27,13 @@ void				ft_swapchar(char **a, char **b)
 	*a = ft_strdup(*b);
 	*b = ft_strdup(c);
 }
+
+/*
+** FT_MAKE_MATRIX
+** ---------------------------------------------------------------------------
+** Esta funcion hara una matriz para almacenar los nombres de los files del
+** directorios en donde se esta trabajando.
+*/
 
 char				**ft_make_matrix(int size, t_top *x, char *path)
 {
@@ -40,12 +47,12 @@ char				**ft_make_matrix(int size, t_top *x, char *path)
 	i = 0;
 	while ((pdirent = readdir(pdir)) != NULL)
 	{
-		if (pdirent->d_name[0] != '.' && (x->flag.a == 0 || x->flag.a >= 1))
+		if (pdirent->d_name[0] == '.' && x->flag.a >= 1)
 		{
 			matrix[i] = ft_strdup(pdirent->d_name);
 			i++;
 		}
-		else if (pdirent->d_name[0] == '.' && x->flag.a >= 1)
+		else if (pdirent->d_name[0] != '.' && (x->flag.a == 0 || x->flag.a >= 1))
 		{
 			matrix[i] = ft_strdup(pdirent->d_name);
 			i++;
@@ -55,6 +62,13 @@ char				**ft_make_matrix(int size, t_top *x, char *path)
 	closedir(pdir);
 	return (matrix);
 }
+
+/*
+** FT_LENDIR
+** ---------------------------------------------------------------------------
+** Con esta funcion obtendremos el numero de archivos que tiene el directorio
+** donde estamos trabajando.
+*/
 
 int					ft_lendir(t_top *x, char *path)
 {
@@ -66,9 +80,9 @@ int					ft_lendir(t_top *x, char *path)
 	i = 0;
 	while ((pdirent = readdir(pdir)) != NULL)
 	{
-		if (pdirent->d_name[0] != '.' && (x->flag.a == 0 || x->flag.a >= 1))
+		if (pdirent->d_name[0] == '.' && x->flag.a >= 1)
 			i++;
-		else if (pdirent->d_name[0] == '.' && x->flag.a >= 1)
+		else if (pdirent->d_name[0] != '.' && (x->flag.a == 0 || x->flag.a >= 1))
 			i++;
 	}
 	closedir(pdir);
