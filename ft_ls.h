@@ -20,6 +20,8 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include "./libft/libft.h"
+# include <errno.h>
+# include <string.h>
 
 /*
 ** ---------------------------------------------------------------------------
@@ -39,6 +41,9 @@ typedef	struct			s_perm
 	int					size;
 	int					num;
 	int					flag;
+	char				*tmp;
+	char				*tmp2;
+	char				*tmp3;
 }						t_perm;
 
 /*
@@ -54,6 +59,7 @@ typedef	struct			s_flag
 	int					r;
 	int					t;
 	int					file;
+	int					rec;
 }						t_flag;
 
 /*
@@ -94,10 +100,16 @@ void					comp_matrix_t(t_top *x, char **matrix,
 	char **times, char *path);
 void					comp_matrix_t_r(t_top *x, char **matrix,
 	char **times, char *path);
-char					**ft_catching_time(int size ,t_top *x, char **files, char *path);
-void					print_basic_t(t_top *x, char *path);
-void					print_basic_t_r(t_top *x, char **matrix, char **times);
+char					**ft_catching_time(int size, t_top *x, char
+	**files, char *path);
+void					print_basic_t(t_top *x, char **matrix, char **times);
+void					print_basic_t_r(t_top *x, char **matrix,
+	char **times);
 void					option_t(t_top *x, char *file, char *path);
 void					recurtion_mexa_t(char *path, t_top *x, int i);
+void					get_file_t(char *file, t_top *x);
+char					**ft_catching_time_r(int size, t_top *x,
+	char **files, char *path);
+int						security_path(char *path);
 
 #endif

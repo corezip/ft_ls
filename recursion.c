@@ -66,10 +66,21 @@ void			comp_matrix(t_top *x, char **matrix, char *path)
 }
 
 /*
-** RECURTION_MEXA
+** RECURTION_MEXA_T
 ** ---------------------------------------------------------------------------
-** TRABAJAR AQUI.
+** Funcion que hara el la recursividad exclusiva para la flag "t" dando las
+** opciones especiales que lleva esa flag.
 */
+
+void			remove_line(t_top *x, char **matrix, char **matrix_time,
+	char *path)
+{
+	x->type.j = -1;
+	if (x->flag.r > 0)
+		comp_matrix_t_r(x, matrix, matrix_time, path);
+	else
+		comp_matrix_t(x, matrix, matrix_time, path);
+}
 
 void			recurtion_mexa_t(char *path, t_top *x, int i)
 {
@@ -78,14 +89,10 @@ void			recurtion_mexa_t(char *path, t_top *x, int i)
 	char		*tmp;
 	char		**matrix_time;
 
-	print_blocks_size(x, path);
 	x->type.i = ft_lendir(x, path);
 	matrix = ft_make_matrix(x->type.i, x, path);
 	matrix_time = ft_catching_time(x->type.i, x, matrix, path);
-	if (x->flag.r > 0)
-		comp_matrix_t_r(x, matrix, matrix_time, path);
-	else
-		comp_matrix_t(x, matrix, matrix_time, path);
+	remove_line(x, matrix, matrix_time, path);
 	while (matrix[++i] != NULL)
 	{
 		tmp = ft_strjoin(path, "/");
@@ -96,6 +103,8 @@ void			recurtion_mexa_t(char *path, t_top *x, int i)
 		{
 			matrix[i] = ft_strdup(tmp);
 			ft_printf("\n%s\n", matrix[i]);
+			x->type.flag = 1;
+			x->type.j = -1;
 			recurtion_mexa_t(matrix[i], x, -1);
 		}
 	}

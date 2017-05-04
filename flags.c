@@ -49,8 +49,7 @@ void		get_file2(char *file, t_top *x)
 {
 	struct stat filestat;
 
-	if (stat(file, &filestat) < 0)
-		perror("Error: ");
+	stat(file, &filestat);
 	if (S_ISDIR(filestat.st_mode))
 	{
 		x->flag.rr = 1;
@@ -71,10 +70,14 @@ void		get_file(char *file, t_top *x)
 {
 	struct stat filestat;
 
+	x->flag.file = 1;
+	if (security_path(file) == 0)
+		return ;
 	if (stat(file, &filestat) < 0)
 		perror("Error: ");
-	x->flag.file = 1;
-	if (x->flag.l >= 1)
+	if (x->flag.t > 0)
+		get_file_t(file, x);
+	else if (x->flag.l >= 1)
 	{
 		if (S_ISDIR(filestat.st_mode))
 			print_blocks_size(x, file);
@@ -123,18 +126,13 @@ void		start_flag(char **argv, t_top *x)
 			else
 				get_file(argv[i], x);
 			i++;
-			j = 1;
+			j = 0;
 		}
-		int z = x->flag.l;
-		int y = x->flag.rr;
-		z = x->flag.a;
-		y = x->flag.r;
-		z = x->flag.t;
 	}
 }
 
 /*
-** FLAG_ZERo
+** FLAG_ZERO
 ** ---------------------------------------------------------------------------
 ** Funcion para inicializar valores en 0 y evitar problemas.
 */
@@ -146,4 +144,5 @@ void		flag_zero(t_top *x)
 	x->flag.r = 0;
 	x->flag.a = 0;
 	x->flag.t = 0;
+	x->flag.rec = 0;
 }

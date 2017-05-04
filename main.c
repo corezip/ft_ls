@@ -12,29 +12,36 @@
 
 #include "ft_ls.h"
 
-void				print_basic_t_r(t_top *x, char **matrix, char **times)
+/*
+** PRINT_BASIC_T_R
+** ---------------------------------------------------------------------------
+** Esta funcion hara el acomodado de la flag "t" y hara la impresion del
+** nombre sin mas atributos de modo reversivo.
+*/
+
+void			print_basic_t_r(t_top *x, char **matrix, char **times)
 {
 	while (x->type.flag != 0)
 	{
 		x->type.flag = 0;
-		while (times[x->type.j] != NULL)
-		{			if((times[x->type.j + 1] && ft_strcmp(times[x->type.j],
-				times[x->type.j + 1])  == 0) && (matrix[x->type.j + 1] &&
-				ft_strcmp(matrix[x->type.j], matrix[x->type.j + 1]) > 0))
+		while (times[++x->type.j] != NULL)
+		{
+			if ((times[x->type.j + 1] && ft_strcmp(times[x->type.j],
+				times[x->type.j + 1]) == 0) && (matrix[x->type.j + 1] &&
+				ft_strcmp(matrix[x->type.j], matrix[x->type.j + 1]) < 0))
 			{
 				ft_swapchar(&matrix[x->type.j + 1], &matrix[x->type.j]);
 				x->type.flag++;
 			}
 			if (times[x->type.j + 1] && ft_strcmp(times[x->type.j],
-				times[x->type.j + 1]) <	 0)
+				times[x->type.j + 1]) < 0)
 			{
 				ft_swapchar(&times[x->type.j], &times[x->type.j + 1]);
 				ft_swapchar(&matrix[x->type.j], &matrix[x->type.j + 1]);
 				x->type.flag++;
 			}
-			x->type.j++;
 		}
-		x->type.j = 0;
+		x->type.j = -1;
 	}
 	x->type.j = -1;
 	while (matrix[++x->type.j] != NULL)
@@ -52,22 +59,28 @@ void			ft_ls_t(t_top *x, char *path)
 {
 	char		**matrix;
 	char		**matrix_time;
-	int			i;
 
-	i = -1;
+	if (security_path(path) == 0)
+		return ;
 	x->type.flag = 1;
-	x->type.j = 0;
+	x->type.j = -1;
 	x->type.i = ft_lendir(x, path);
 	matrix = ft_make_matrix(x->type.i, x, path);
-	matrix_time = ft_catching_time(x->type.i, x, matrix, path);
+	if (x->flag.rr > 1)
+		matrix_time = ft_catching_time_r(x->type.i, x, matrix, path);
+	else
+		matrix_time = ft_catching_time(x->type.i, x, matrix, path);
+	x->type.j = -1;
 	if (x->flag.rr >= 1)
 		recurtion_mexa_t(path, x, -1);
 	else if (x->flag.l >= 1 && x->flag.r == 0)
 		comp_matrix_t(x, matrix, matrix_time, path);
 	else if (x->flag.l >= 1 && x->flag.r >= 1)
 		comp_matrix_t_r(x, matrix, matrix_time, path);
-	else
+	else if (x->flag.r > 0)
 		print_basic_t_r(x, matrix, matrix_time);
+	else
+		print_basic_t(x, matrix, matrix_time);
 }
 
 /*
@@ -124,6 +137,8 @@ void			ls_menu(t_top *x, char *path)
 	char		**matrix;
 
 	matrix = NULL;
+	if (security_path(path) == 0)
+		return ;
 	if (x->flag.t >= 1)
 		ft_ls_t(x, path);
 	else if (x->flag.rr >= 1)

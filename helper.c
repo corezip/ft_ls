@@ -13,6 +13,33 @@
 #include "ft_ls.h"
 
 /*
+** GET_FILE_T
+** ---------------------------------------------------------------------------
+** Con esta funcion sabremos el camino que tomara el file que fue introducido
+** por argumento.
+*/
+
+void				get_file_t(char *file, t_top *x)
+{
+	struct stat		filestat;
+
+	if (stat(file, &filestat) < 0)
+		perror("Error: ");
+	if (S_ISDIR(filestat.st_mode))
+	{
+		x->type.flag = 1;
+		x->type.j = -1;
+		x->flag.rr = 1;
+		x->flag.rec = 2;
+		recurtion_mexa_t(file, x, -1);
+	}
+	else if (x->flag.l > 0)
+		print_value_ls(file);
+	else
+		ft_printf("%s\n", file);
+}
+
+/*
 ** FT_SWAPCHAR
 ** ---------------------------------------------------------------------------
 ** Esta funcion hara un simple cambio de nombres en la matrix donde se
@@ -52,7 +79,8 @@ char				**ft_make_matrix(int size, t_top *x, char *path)
 			matrix[i] = ft_strdup(pdirent->d_name);
 			i++;
 		}
-		else if (pdirent->d_name[0] != '.' && (x->flag.a == 0 || x->flag.a >= 1))
+		else if (pdirent->d_name[0] != '.' && (x->flag.a == 0 ||
+			x->flag.a >= 1))
 		{
 			matrix[i] = ft_strdup(pdirent->d_name);
 			i++;
@@ -82,7 +110,8 @@ int					ft_lendir(t_top *x, char *path)
 	{
 		if (pdirent->d_name[0] == '.' && x->flag.a >= 1)
 			i++;
-		else if (pdirent->d_name[0] != '.' && (x->flag.a == 0 || x->flag.a >= 1))
+		else if (pdirent->d_name[0] != '.' && (x->flag.a == 0 ||
+			x->flag.a >= 1))
 			i++;
 	}
 	closedir(pdir);

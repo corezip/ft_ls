@@ -13,6 +13,42 @@
 #include "ft_ls.h"
 
 /*
+** PRINT_BASIC_T
+** ---------------------------------------------------------------------------
+** Esta funcion hara el acomodado de la flag "t" y hara la impresion del
+** nombre sin mas atributos.
+*/
+
+void				print_basic_t(t_top *x, char **matrix, char **times)
+{
+	while (x->type.flag != 0)
+	{
+		x->type.flag = 0;
+		while (times[++x->type.j] != NULL)
+		{
+			if ((times[x->type.j + 1] && ft_strcmp(times[x->type.j],
+				times[x->type.j + 1]) == 0) && (matrix[x->type.j + 1] &&
+				ft_strcmp(matrix[x->type.j], matrix[x->type.j + 1]) < 0))
+			{
+				ft_swapchar(&matrix[x->type.j + 1], &matrix[x->type.j]);
+				x->type.flag++;
+			}
+			if (times[x->type.j + 1] && ft_strcmp(times[x->type.j],
+				times[x->type.j + 1]) < 0)
+			{
+				ft_swapchar(&times[x->type.j], &times[x->type.j + 1]);
+				ft_swapchar(&matrix[x->type.j], &matrix[x->type.j + 1]);
+				x->type.flag++;
+			}
+		}
+		x->type.j = -1;
+	}
+	x->type.j = -1;
+	while (matrix[++x->type.j] != NULL)
+		ft_printf("%s\n", matrix[x->type.j]);
+}
+
+/*
 ** PRINT_BLOCKS_SIZE
 ** ---------------------------------------------------------------------------
 ** Esta funcion obtendra el tamaño de los bloques que utiliza cada archivo.
@@ -31,12 +67,13 @@ void				print_blocks_size(t_top *x, char *path)
 	while ((pdirent = readdir(pdir)) != NULL)
 	{
 		stat(pdirent->d_name, &buff);
-		if (pdirent->d_name[0] != '.' && x->flag.a >= 1)
+		if (pdirent->d_name[0] == '.' && x->flag.a >= 1)
 		{
 			x->type.size += buff.st_blocks;
 			i++;
 		}
-		else if (pdirent->d_name[0] == '.' && (x->flag.a == 0 || x->flag.a >= 1))
+		else if (pdirent->d_name[0] != '.' && (x->flag.a == 0 ||
+			x->flag.a > 0))
 		{
 			x->type.size += buff.st_blocks;
 			i++;
@@ -67,7 +104,6 @@ int					print_value_recu(char *file, char *path)
 	lstat(tmp, &filestat);
 	pw = getpwuid(filestat.st_uid);
 	gr = getgrgid(filestat.st_gid);
-	// ft_printf("Path: %s\n ", tmp);
 	ft_printf((S_ISDIR(filestat.st_mode)) ? "d" : "-");
 	ft_printf((filestat.st_mode & S_IRUSR) ? "r" : "-");
 	ft_printf((filestat.st_mode & S_IWUSR) ? "w" : "-");

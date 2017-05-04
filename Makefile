@@ -1,6 +1,6 @@
 NAME	= ft_ls
 
-SRC		=	main.c print.c recursion.c sort.c flags.c helper.c
+SRC		=	main.c print.c recursion.c sort.c flags.c helper.c time.c
 
 OBJ		= $(SRC:.c=.o)
 

@@ -13,6 +13,26 @@
 #include "ft_ls.h"
 
 /*
+** SECURITY_PATH
+** ---------------------------------------------------------------------------
+** Esta funcion comprueba los accesos a los files o carpetas para evitar
+** errores de permisos.
+*/
+
+int				security_path(char *path)
+{
+	FILE		*fp;
+
+	fp = fopen(path, "r");
+	if (fp == NULL)
+	{
+		ft_printf("Error: %s\n", strerror(errno));
+		return (0);
+	}
+	return (1);
+}
+
+/*
 ** COMP_MATRIX_R(reverse)
 ** ---------------------------------------------------------------------------
 ** Esta funcion hace impresion de los nombres sin mas informacion pero de
@@ -109,84 +129,6 @@ void			comp_normal(t_top *x, char **matrix, char *path)
 		else
 			print_value_ls(matrix[x->type.j]);
 	}
-}
-
-/*
-** PRINT_L
-** ---------------------------------------------------------------------------
-** Funcion que acomoda por fecha de ultima modificacion y despues por orden
-** alfabetico en caso de tener la misma fecha.
-*/
-
-
-void				option_t(t_top *x, char *file, char *path)
-{
-	if (x->flag.l > 0 && x->flag.rr > 0)
-		print_value_recu(file, path);
-	else if (x->flag.l > 0 || (x->flag.l > 0 && x->flag.r > 0))
-		print_value_ls(file);
-	else
-		ft_printf("%s\n", file);
-}
-
-void				comp_matrix_t_r(t_top *x, char **matrix, char **times, char *path)
-{
-	while (x->type.flag != 0)
-	{
-		x->type.flag = 0;
-		while (times[x->type.j] != NULL)
-		{			if((times[x->type.j + 1] && ft_strcmp(times[x->type.j],
-				times[x->type.j + 1])  == 0) && (matrix[x->type.j + 1] &&
-				ft_strcmp(matrix[x->type.j], matrix[x->type.j + 1]) > 0))
-			{
-				ft_swapchar(&matrix[x->type.j + 1], &matrix[x->type.j]);
-				x->type.flag++;
-			}
-			if (times[x->type.j + 1] && ft_strcmp(times[x->type.j],
-				times[x->type.j + 1]) > 0)
-			{
-				ft_swapchar(&times[x->type.j], &times[x->type.j + 1]);
-				ft_swapchar(&matrix[x->type.j], &matrix[x->type.j + 1]);
-				x->type.flag++;
-			}
-			x->type.j++;
-		}
-		x->type.j = 0;
-	}
-	x->type.j = -1;
-	while (matrix[++x->type.j] != NULL)
-		option_t(x, matrix[x->type.j], path);
-}
-
-void				comp_matrix_t(t_top *x, char **matrix, char **times, char *path)
-{
-	x->type.flag = 1;
-	x->type.j = -1;
-	while (x->type.flag != 0)
-	{
-		x->type.flag = 0;
-		while (times[++x->type.j] != NULL)
-		{
-			if((times[x->type.j + 1] && ft_strcmp(times[x->type.j],
-				times[x->type.j + 1])  == 0) && (matrix[x->type.j + 1] &&
-				ft_strcmp(matrix[x->type.j], matrix[x->type.j + 1]) < 0))
-			{
-				ft_swapchar(&matrix[x->type.j + 1], &matrix[x->type.j]);
-				x->type.flag++;
-			}
-			if (times[x->type.j + 1] && ft_strcmp(times[x->type.j],
-				times[x->type.j + 1]) <	 0)
-			{
-				ft_swapchar(&times[x->type.j], &times[x->type.j + 1]);
-				ft_swapchar(&matrix[x->type.j], &matrix[x->type.j + 1]);
-				x->type.flag++;
-			}
-		}
-		x->type.j = -1;
-	}
-	x->type.j = -1;
-	while (matrix[++x->type.j] != NULL)
-			option_t(x, matrix[x->type.j], path);
 }
 
 /*
