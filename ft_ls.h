@@ -41,6 +41,7 @@ typedef	struct			s_perm
 	int					size;
 	int					num;
 	int					flag;
+	int					l;
 	char				*tmp;
 	char				*tmp2;
 	char				*tmp3;
@@ -56,10 +57,14 @@ typedef	struct			s_flag
 	int					l;
 	int					rr;
 	int					a;
+	int					aa;
 	int					r;
 	int					t;
 	int					file;
 	int					rec;
+	int					i;
+	int					j;
+	int					f;
 }						t_flag;
 
 /*
@@ -111,5 +116,12 @@ void					get_file_t(char *file, t_top *x);
 char					**ft_catching_time_r(int size, t_top *x,
 	char **files, char *path);
 int						security_path(char *path);
+int						print_stat(struct stat filestat);
+void					only_dot(t_top *x, char *path);
+char					**matrix_sort(t_top *x, char **matrix);
+char					**matrix_sort_reverse(t_top *x, char **matrix);
+void					dir_arg(t_top *x, char *path);
+char					*get_link(char *path);
+void					no_sort(t_top *x, char *path);
 
 #endif

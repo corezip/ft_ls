@@ -28,13 +28,13 @@ void			print_basic_t_r(t_top *x, char **matrix, char **times)
 		{
 			if ((times[x->type.j + 1] && ft_strcmp(times[x->type.j],
 				times[x->type.j + 1]) == 0) && (matrix[x->type.j + 1] &&
-				ft_strcmp(matrix[x->type.j], matrix[x->type.j + 1]) < 0))
+				ft_strcmp(matrix[x->type.j], matrix[x->type.j + 1]) > 0))
 			{
 				ft_swapchar(&matrix[x->type.j + 1], &matrix[x->type.j]);
 				x->type.flag++;
 			}
 			if (times[x->type.j + 1] && ft_strcmp(times[x->type.j],
-				times[x->type.j + 1]) < 0)
+				times[x->type.j + 1]) > 0)
 			{
 				ft_swapchar(&times[x->type.j], &times[x->type.j + 1]);
 				ft_swapchar(&matrix[x->type.j], &matrix[x->type.j + 1]);
@@ -139,7 +139,11 @@ void			ls_menu(t_top *x, char *path)
 	matrix = NULL;
 	if (security_path(path) == 0)
 		return ;
-	if (x->flag.t >= 1)
+	if (x->flag.aa > 0 && x->flag.a == 0)
+		only_dot(x, path);
+	else if (x->flag.f > 0)
+		no_sort(x, path);
+	else if (x->flag.t >= 1)
 		ft_ls_t(x, path);
 	else if (x->flag.rr >= 1)
 		recurtion_mexa(path, x, 0);

@@ -24,11 +24,11 @@ int			flag_on(t_top *x)
 	x->type.size = 0;
 	x->type.flag = 1;
 	x->type.j = 0;
-	if (x->flag.l > 0)
+	if (x->flag.l > 0 || x->flag.f > 0)
 		return (1);
 	else if (x->flag.rr > 0)
 		return (1);
-	else if (x->flag.a > 0)
+	else if (x->flag.a > 0 || x->flag.aa > 0)
 		return (1);
 	else if (x->flag.r > 0)
 		return (1);
@@ -70,25 +70,25 @@ void		get_file(char *file, t_top *x)
 {
 	struct stat filestat;
 
-	x->flag.file = 1;
-	if (security_path(file) == 0)
+	if (get_file_error(filestat) == 0)
 		return ;
-	if (stat(file, &filestat) < 0)
-		perror("Error: ");
 	if (x->flag.t > 0)
 		get_file_t(file, x);
 	else if (x->flag.l >= 1)
 	{
-		if (S_ISDIR(filestat.st_mode))
-			print_blocks_size(x, file);
-		get_file2(file, x);
+		if (S_ISDIR(filestat.st_mode) && x->flag.rr == 0)
+			dir_arg(x, file);
+		else
+			get_file2(file, x);
 	}
 	else
 	{
 		if (S_ISDIR(filestat.st_mode))
 		{
-			x->flag.rr = 1;
-			recurtion_mexa(file, x, 0);
+			if (S_ISDIR(filestat.st_mode) && x->flag.rr == 0)
+				dir_arg(x, file);
+			else
+				get_file2(file, x);
 		}
 		else
 			ft_printf("%s\n", file);
@@ -104,29 +104,28 @@ void		get_file(char *file, t_top *x)
 
 void		start_flag(char **argv, t_top *x)
 {
-	int i;
-	int j;
-
-	i = 1;
-	j = 0;
+	x->flag.i = 1;
+	x->flag.j = 0;
 	{
-		while (argv[i])
+		while (argv[x->flag.i])
 		{
-			if (argv[i][0] == '-')
+			if (argv[x->flag.i][0] == '-')
 			{
-				while (argv[i][++j])
+				while (argv[x->flag.i][++x->flag.j])
 				{
-					x->flag.l += (argv[i][j] == 'l') ? 1 : 0;
-					x->flag.rr += (argv[i][j] == 'R') ? 1 : 0;
-					x->flag.a += (argv[i][j] == 'a') ? 1 : 0;
-					x->flag.r += (argv[i][j] == 'r') ? 1 : 0;
-					x->flag.t += (argv[i][j] == 't') ? 1 : 0;
+					x->flag.l += (argv[x->flag.i][x->flag.j] == 'l') ? 1 : 0;
+					x->flag.rr += (argv[x->flag.i][x->flag.j] == 'R') ? 1 : 0;
+					x->flag.a += (argv[x->flag.i][x->flag.j] == 'a') ? 1 : 0;
+					x->flag.r += (argv[x->flag.i][x->flag.j] == 'r') ? 1 : 0;
+					x->flag.t += (argv[x->flag.i][x->flag.j] == 't') ? 1 : 0;
+					x->flag.aa += (argv[x->flag.i][x->flag.j] == 'A') ? 1 : 0;
+					x->flag.f += (argv[x->flag.i][x->flag.j] == 'f') ? 1 : 0;
 				}
 			}
 			else
-				get_file(argv[i], x);
-			i++;
-			j = 0;
+				get_file(argv[x->flag.i], x);
+			x->flag.i++;
+			x->flag.j = 0;
 		}
 	}
 }
@@ -143,6 +142,9 @@ void		flag_zero(t_top *x)
 	x->flag.rr = 0;
 	x->flag.r = 0;
 	x->flag.a = 0;
+	x->flag.aa = 0;
 	x->flag.t = 0;
 	x->flag.rec = 0;
+	x->flag.f = 0;
+	x->type.l = 0;
 }

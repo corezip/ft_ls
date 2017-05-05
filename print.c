@@ -98,25 +98,21 @@ int					print_value_recu(char *file, char *path)
 	struct passwd	*pw;
 	struct group	*gr;
 	char			*tmp;
+	int				i;
 
 	path = ft_strjoin(path, "/");
 	tmp = ft_strjoin(path, file);
 	lstat(tmp, &filestat);
 	pw = getpwuid(filestat.st_uid);
 	gr = getgrgid(filestat.st_gid);
-	ft_printf((S_ISDIR(filestat.st_mode)) ? "d" : "-");
-	ft_printf((filestat.st_mode & S_IRUSR) ? "r" : "-");
-	ft_printf((filestat.st_mode & S_IWUSR) ? "w" : "-");
-	ft_printf((filestat.st_mode & S_IXUSR) ? "x" : "-");
-	ft_printf((filestat.st_mode & S_IRGRP) ? "r" : "-");
-	ft_printf((filestat.st_mode & S_IWGRP) ? "w" : "-");
-	ft_printf((filestat.st_mode & S_IXGRP) ? "x" : "-");
-	ft_printf((filestat.st_mode & S_IROTH) ? "r" : "-");
-	ft_printf((filestat.st_mode & S_IWOTH) ? "w" : "-");
-	ft_printf((filestat.st_mode & S_IXOTH) ? "x" : "-");
+	i = print_stat(filestat);
 	ft_printf("  %d %s  %s %7d ", filestat.st_nlink, pw->pw_name,
 		gr->gr_name, filestat.st_size);
-	ft_printf("%s %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12), file);
+	if (i == 0)
+		ft_printf("%s %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12), file);
+	else
+		ft_printf("%s %s -> %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12),
+			file, get_link(tmp));
 	return (filestat.st_blocks);
 }
 
@@ -133,24 +129,20 @@ int					print_value_ls(char *file)
 	struct stat		filestat;
 	struct passwd	*pw;
 	struct group	*gr;
+	int				i;
 
 	if (lstat(file, &filestat) < 0)
 		return (1);
 	pw = getpwuid(filestat.st_uid);
 	gr = getgrgid(filestat.st_gid);
-	ft_printf((S_ISDIR(filestat.st_mode)) ? "d" : "-");
-	ft_printf((filestat.st_mode & S_IRUSR) ? "r" : "-");
-	ft_printf((filestat.st_mode & S_IWUSR) ? "w" : "-");
-	ft_printf((filestat.st_mode & S_IXUSR) ? "x" : "-");
-	ft_printf((filestat.st_mode & S_IRGRP) ? "r" : "-");
-	ft_printf((filestat.st_mode & S_IWGRP) ? "w" : "-");
-	ft_printf((filestat.st_mode & S_IXGRP) ? "x" : "-");
-	ft_printf((filestat.st_mode & S_IROTH) ? "r" : "-");
-	ft_printf((filestat.st_mode & S_IWOTH) ? "w" : "-");
-	ft_printf((filestat.st_mode & S_IXOTH) ? "x" : "-");
+	i = print_stat(filestat);
 	ft_printf("  %d %s  %s %7d ", filestat.st_nlink, pw->pw_name,
 		gr->gr_name, filestat.st_size);
-	ft_printf("%s %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12), file);
+	if (i == 0)
+		ft_printf("%s %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12), file);
+	else
+		ft_printf("%s %s -> %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12),
+			file, get_link(file));
 	return (filestat.st_blocks);
 }
 
@@ -169,21 +161,7 @@ void				print_basic(t_top *x, char *path)
 	x->type.j = 0;
 	x->type.i = ft_lendir(x, path);
 	matrix = ft_make_matrix(x->type.i, x, path);
-	while (x->type.flag != 0)
-	{
-		x->type.flag = 0;
-		while (matrix[x->type.j] != NULL)
-		{
-			if (matrix[x->type.j + 1] && ft_strcmp(matrix[x->type.j],
-				matrix[x->type.j + 1]) > 0)
-			{
-				ft_swapchar(&matrix[x->type.j], &matrix[x->type.j + 1]);
-				x->type.flag++;
-			}
-			x->type.j++;
-		}
-		x->type.j = 0;
-	}
+	matrix = matrix_sort(x, matrix);
 	x->type.j = -1;
 	while (matrix[++x->type.j] != NULL)
 		ft_printf("%s\n", matrix[x->type.j]);
