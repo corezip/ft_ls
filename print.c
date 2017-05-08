@@ -106,6 +106,7 @@ int					print_value_recu(char *file, char *path)
 	pw = getpwuid(filestat.st_uid);
 	gr = getgrgid(filestat.st_gid);
 	i = print_stat(filestat);
+	ft_printf(listxattr(tmp, 0, 0, XATTR_NOFOLLOW) > 0 ? "@" : "");
 	ft_printf("  %d %s  %s %7d ", filestat.st_nlink, pw->pw_name,
 		gr->gr_name, filestat.st_size);
 	if (i == 0)
@@ -136,6 +137,7 @@ int					print_value_ls(char *file)
 	pw = getpwuid(filestat.st_uid);
 	gr = getgrgid(filestat.st_gid);
 	i = print_stat(filestat);
+	ft_printf(listxattr(file, 0, 0, XATTR_NOFOLLOW) > 0 ? "@" : "");
 	ft_printf("  %d %s  %s %7d ", filestat.st_nlink, pw->pw_name,
 		gr->gr_name, filestat.st_size);
 	if (i == 0)

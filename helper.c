@@ -12,6 +12,19 @@
 
 #include "ft_ls.h"
 
+void				else_helper(struct stat filestat, t_top *x, char *file)
+{
+	if (S_ISDIR(filestat.st_mode))
+	{
+		if (S_ISDIR(filestat.st_mode) && x->flag.rr == 0)
+			dir_arg(x, file);
+		else
+			get_file2(file, x);
+	}
+	else
+		ft_printf("%s\n", file);
+}
+
 /*
 ** GET_FILE_T
 ** ---------------------------------------------------------------------------

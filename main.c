@@ -186,7 +186,7 @@ int				main(int argc, char **argv)
 				ls_menu(x, ".");
 			else if (x->flag.file == 0)
 				ft_printf("ft_ls: illegal option -- %c\nusage: ft_ls"
-					" [-Ralrt] [file ...]\n", argv[1][1]);
+					" [-ARaflrt] [file ...]\n", argv[1][1]);
 		}
 	}
 	ft_memdel((void**)&x);

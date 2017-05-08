@@ -54,9 +54,8 @@ char			**matrix_sort_reverse(t_top *x, char **matrix)
 	return (matrix);
 }
 
-int				get_file_error(struct stat filestat)
+int				get_file_error(struct stat filestat, char *file)
 {
-	x->flag.file = 1;
 	if (security_path(file) == 0)
 		return (0);
 	if (stat(file, &filestat) < 0)

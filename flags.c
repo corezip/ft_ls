@@ -52,7 +52,6 @@ void		get_file2(char *file, t_top *x)
 	stat(file, &filestat);
 	if (S_ISDIR(filestat.st_mode))
 	{
-		x->flag.rr = 1;
 		recurtion_mexa(file, x, 0);
 	}
 	else
@@ -70,7 +69,10 @@ void		get_file(char *file, t_top *x)
 {
 	struct stat filestat;
 
-	if (get_file_error(filestat) == 0)
+	x->flag.file = 1;
+	if (lstat(file, &filestat) < 0)
+		return ;
+	if (get_file_error(filestat, file) == 0)
 		return ;
 	if (x->flag.t > 0)
 		get_file_t(file, x);
@@ -83,15 +85,7 @@ void		get_file(char *file, t_top *x)
 	}
 	else
 	{
-		if (S_ISDIR(filestat.st_mode))
-		{
-			if (S_ISDIR(filestat.st_mode) && x->flag.rr == 0)
-				dir_arg(x, file);
-			else
-				get_file2(file, x);
-		}
-		else
-			ft_printf("%s\n", file);
+		else_helper(filestat, x, file);
 	}
 }
 

@@ -22,6 +22,7 @@
 # include "./libft/libft.h"
 # include <errno.h>
 # include <string.h>
+# include <sys/xattr.h>
 
 /*
 ** ---------------------------------------------------------------------------
@@ -113,6 +114,7 @@ void					print_basic_t_r(t_top *x, char **matrix,
 void					option_t(t_top *x, char *file, char *path);
 void					recurtion_mexa_t(char *path, t_top *x, int i);
 void					get_file_t(char *file, t_top *x);
+void					get_file2(char *file, t_top *x);
 char					**ft_catching_time_r(int size, t_top *x,
 	char **files, char *path);
 int						security_path(char *path);
@@ -123,5 +125,7 @@ char					**matrix_sort_reverse(t_top *x, char **matrix);
 void					dir_arg(t_top *x, char *path);
 char					*get_link(char *path);
 void					no_sort(t_top *x, char *path);
+void					else_helper(struct stat filestat, t_top *x, char *file);
+int						get_file_error(struct stat filestat, char *file);
 
 #endif

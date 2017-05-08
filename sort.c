@@ -75,7 +75,7 @@ void			comp_rev(t_top *x, char **matrix, char *path)
 	x->type.j = -1;
 	while (matrix[++x->type.j] != NULL)
 	{
-		if (x->flag.rr >= 1)
+		if (x->flag.rr >= 1 || x->flag.file > 0)
 			print_value_recu(matrix[x->type.j], path);
 		else
 			print_value_ls(matrix[x->type.j]);
@@ -96,7 +96,7 @@ void			comp_normal(t_top *x, char **matrix, char *path)
 	x->type.j = -1;
 	while (matrix[++x->type.j] != NULL)
 	{
-		if (x->flag.rr >= 1)
+		if (x->flag.rr >= 1 || x->flag.file > 0)
 			print_value_recu(matrix[x->type.j], path);
 		else
 			print_value_ls(matrix[x->type.j]);

@@ -140,7 +140,8 @@ void			recurtion_mexa(char *path, t_top *x, int i)
 		tmp = ft_strjoin(tmp, matrix[i]);
 		lstat(tmp, &filestat);
 		if (((S_ISDIR(filestat.st_mode) && ft_strcmp(matrix[i], "."))) &&
-			((S_ISDIR(filestat.st_mode) && ft_strcmp(matrix[i], ".."))))
+			((S_ISDIR(filestat.st_mode) && ft_strcmp(matrix[i], ".."))) &&
+			x->flag.rr > 0)
 		{
 			matrix[i] = ft_strdup(tmp);
 			ft_printf("\n%s\n", matrix[i]);
