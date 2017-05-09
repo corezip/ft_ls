@@ -77,31 +77,30 @@ void				ft_swapchar(char **a, char **b)
 
 char				**ft_make_matrix(int size, t_top *x, char *path)
 {
-	struct dirent	*pdirent;
-	DIR				*pdir;
-	int				i;
-	char			**matrix;
-
-	matrix = (char **)malloc(sizeof(char *) * (size + 1));
-	pdir = opendir(path);
-	i = 0;
-	while ((pdirent = readdir(pdir)) != NULL)
+	x->dir.matrix = (char **)malloc(sizeof(char *) * (size + 1));
+	if (!(x->dir.pdir = opendir(path)))
 	{
-		if (pdirent->d_name[0] == '.' && x->flag.a >= 1)
+		x->flag.error = 1;
+		return (x->dir.matrix);
+	}
+	x->dir.i = 0;
+	while ((x->dir.pdirent = readdir(x->dir.pdir)) != NULL)
+	{
+		if (x->dir.pdirent->d_name[0] == '.' && x->flag.a >= 1)
 		{
-			matrix[i] = ft_strdup(pdirent->d_name);
-			i++;
+			x->dir.matrix[x->dir.i] = ft_strdup(x->dir.pdirent->d_name);
+			x->dir.i++;
 		}
-		else if (pdirent->d_name[0] != '.' && (x->flag.a == 0 ||
+		else if (x->dir.pdirent->d_name[0] != '.' && (x->flag.a == 0 ||
 			x->flag.a >= 1))
 		{
-			matrix[i] = ft_strdup(pdirent->d_name);
-			i++;
+			x->dir.matrix[x->dir.i] = ft_strdup(x->dir.pdirent->d_name);
+			x->dir.i++;
 		}
 	}
-	matrix[i] = NULL;
-	closedir(pdir);
-	return (matrix);
+	x->dir.matrix[x->dir.i] = NULL;
+	closedir(x->dir.pdir);
+	return (x->dir.matrix);
 }
 
 /*
@@ -117,7 +116,13 @@ int					ft_lendir(t_top *x, char *path)
 	DIR				*pdir;
 	int				i;
 
-	pdir = opendir(path);
+	x->flag.error = 0;
+	if (!(pdir = opendir(path)))
+	{
+		ft_printf("Error: %s %s\n", path, strerror(errno));
+		x->flag.error = 1;
+		return (0);
+	}
 	i = 0;
 	while ((pdirent = readdir(pdir)) != NULL)
 	{

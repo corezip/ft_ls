@@ -58,29 +58,30 @@ void				print_basic_t(t_top *x, char **matrix, char **times)
 void				print_blocks_size(t_top *x, char *path)
 {
 	struct dirent	*pdirent;
-	DIR				*pdir;
-	int				i;
-	struct stat		buff;
 
-	pdir = opendir(path);
-	i = 0;
-	while ((pdirent = readdir(pdir)) != NULL)
+	if (!(x->dir.pdir = opendir(path)))
 	{
-		stat(pdirent->d_name, &buff);
+		ft_printf("Error: %s\n", strerror(errno));
+		return ;
+	}
+	x->dir.i = 0;
+	while ((pdirent = readdir(x->dir.pdir)) != NULL)
+	{
+		stat(pdirent->d_name, &x->dir.buff);
 		if (pdirent->d_name[0] == '.' && x->flag.a >= 1)
 		{
-			x->type.size += buff.st_blocks;
-			i++;
+			x->type.size += x->dir.buff.st_blocks;
+			x->dir.i++;
 		}
 		else if (pdirent->d_name[0] != '.' && (x->flag.a == 0 ||
 			x->flag.a > 0))
 		{
-			x->type.size += buff.st_blocks;
-			i++;
+			x->type.size += x->dir.buff.st_blocks;
+			x->dir.i++;
 		}
 	}
 	ft_printf("Total: %d\n", x->type.size);
-	closedir(pdir);
+	closedir(x->dir.pdir);
 }
 
 /*
@@ -106,7 +107,7 @@ int					print_value_recu(char *file, char *path)
 	pw = getpwuid(filestat.st_uid);
 	gr = getgrgid(filestat.st_gid);
 	i = print_stat(filestat);
-	ft_printf(listxattr(tmp, 0, 0, XATTR_NOFOLLOW) > 0 ? "@" : "");
+	ft_printf(listxattr(tmp, 0, 0, XATTR_NOFOLLOW) > 0 ? "@" : " ");
 	ft_printf("  %d %s  %s %7d ", filestat.st_nlink, pw->pw_name,
 		gr->gr_name, filestat.st_size);
 	if (i == 0)
@@ -137,7 +138,7 @@ int					print_value_ls(char *file)
 	pw = getpwuid(filestat.st_uid);
 	gr = getgrgid(filestat.st_gid);
 	i = print_stat(filestat);
-	ft_printf(listxattr(file, 0, 0, XATTR_NOFOLLOW) > 0 ? "@" : "");
+	ft_printf(listxattr(file, 0, 0, XATTR_NOFOLLOW) > 0 ? "@" : " ");
 	ft_printf("  %d %s  %s %7d ", filestat.st_nlink, pw->pw_name,
 		gr->gr_name, filestat.st_size);
 	if (i == 0)

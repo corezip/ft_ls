@@ -71,7 +71,10 @@ void		get_file(char *file, t_top *x)
 
 	x->flag.file = 1;
 	if (lstat(file, &filestat) < 0)
+	{
+		ft_printf("ls: %s: %s\n", file, strerror(errno));
 		return ;
+	}
 	if (get_file_error(filestat, file) == 0)
 		return ;
 	if (x->flag.t > 0)
@@ -141,4 +144,5 @@ void		flag_zero(t_top *x)
 	x->flag.rec = 0;
 	x->flag.f = 0;
 	x->type.l = 0;
+	x->flag.error = 0;
 }

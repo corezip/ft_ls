@@ -48,6 +48,17 @@ typedef	struct			s_perm
 	char				*tmp3;
 }						t_perm;
 
+typedef	struct			s_dir
+{
+	struct dirent		*pdirent;
+	struct stat			filestat;
+	DIR					*pdir;
+	struct stat			buff;
+	int					i;
+	char				**matrix;
+	char				*tmp;
+}						t_dir;
+
 /*
 ** ---------------------------------------------------------------------------
 ** Las flags sirven para saber si recibo "-".
@@ -66,6 +77,7 @@ typedef	struct			s_flag
 	int					i;
 	int					j;
 	int					f;
+	int					error;
 }						t_flag;
 
 /*
@@ -77,6 +89,7 @@ typedef	struct			s_top
 {
 	t_perm				type;
 	t_flag				flag;
+	t_dir				dir;
 }						t_top;
 
 void					print_basic(t_top *x, char *path);

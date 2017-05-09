@@ -146,7 +146,7 @@ void			ls_menu(t_top *x, char *path)
 	else if (x->flag.t >= 1)
 		ft_ls_t(x, path);
 	else if (x->flag.rr >= 1)
-		recurtion_mexa(path, x, 0);
+		recurtion_mexa(path, x, -1);
 	else if (x->flag.a >= 1 && x->flag.l <= 0)
 		print_basic(x, path);
 	else if (x->flag.r >= 1 && x->flag.l <= 0)
