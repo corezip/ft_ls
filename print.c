@@ -110,11 +110,14 @@ int					print_value_recu(char *file, char *path)
 	ft_printf(listxattr(tmp, 0, 0, XATTR_NOFOLLOW) > 0 ? "@" : " ");
 	ft_printf("  %d %s  %s %7d ", filestat.st_nlink, pw->pw_name,
 		gr->gr_name, filestat.st_size);
-	if (i == 0)
+	if (i == 0 && !(S_ISDIR(filestat.st_mode)))
 		ft_printf("%s %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12), file);
+	else if (i == 1)
+		ft_printfcolor("%s %s -> %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12),
+			39, file, 34, get_link(tmp), 31);
 	else
-		ft_printf("%s %s -> %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12),
-			file, get_link(tmp));
+		ft_printfcolor("%s %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12),
+			39, file, 34);
 	return (filestat.st_blocks);
 }
 
@@ -141,11 +144,14 @@ int					print_value_ls(char *file)
 	ft_printf(listxattr(file, 0, 0, XATTR_NOFOLLOW) > 0 ? "@" : " ");
 	ft_printf("  %d %s  %s %7d ", filestat.st_nlink, pw->pw_name,
 		gr->gr_name, filestat.st_size);
-	if (i == 0)
+	if (i == 0 && !(S_ISDIR(filestat.st_mode)))
 		ft_printf("%s %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12), file);
+	else if (i == 1)
+		ft_printfcolor("%s %s -> %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12),
+			39, file, 34, get_link(file), 31);
 	else
-		ft_printf("%s %s -> %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12),
-			file, get_link(file));
+		ft_printfcolor("%s %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12),
+			39, file, 34);
 	return (filestat.st_blocks);
 }
 

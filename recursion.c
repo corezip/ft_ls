@@ -124,13 +124,14 @@ void			recurtion_mexa_t(char *path, t_top *x, int i)
 
 void			recurtion_mexa(char *path, t_top *x, int i)
 {
+	char **matrix;
 	x->type.i = ft_lendir(x, path);
-	x->dir.matrix = ft_make_matrix(x->type.i, x, path);
+	matrix = ft_make_matrix(x->type.i, x, path);
 	if (x->flag.l >= 1 || (x->flag.file >= 1 && x->flag.l >= 1))
-		comp_matrix(x, x->dir.matrix, path);
+		comp_matrix(x, matrix, path);
 	else
-		comp_matrix_r(x, x->dir.matrix);
-	while (x->dir.matrix[++i] != '\0')
+		comp_matrix_r(x, matrix);
+	while (matrix[++i] != '\0')
 	{
 		if (x->flag.error == 1)
 		{
@@ -138,15 +139,15 @@ void			recurtion_mexa(char *path, t_top *x, int i)
 			return ;
 		}
 		x->dir.tmp = ft_strjoin(path, "/");
-		x->dir.tmp = ft_strjoin(x->dir.tmp, x->dir.matrix[i]);
+		x->dir.tmp = ft_strjoin(x->dir.tmp, matrix[i]);
 		lstat(x->dir.tmp, &x->dir.filestat);
-		if (((S_ISDIR(x->dir.filestat.st_mode) && ft_strcmp(x->dir.matrix[i],
+		if (((S_ISDIR(x->dir.filestat.st_mode) && ft_strcmp(matrix[i],
 			"."))) && ((S_ISDIR(x->dir.filestat.st_mode) &&
-			ft_strcmp(x->dir.matrix[i], ".."))) && x->flag.rr > 0)
+			ft_strcmp(matrix[i], ".."))) && x->flag.rr > 0)
 		{
-			x->dir.matrix[i] = ft_strdup(x->dir.tmp);
+			matrix[i] = ft_strdup(x->dir.tmp);
 			ft_printf("\n%s\n", x->dir.matrix[i]);
-			recurtion_mexa(x->dir.matrix[i], x, -1);
+			recurtion_mexa(matrix[i], x, -1);
 		}
 	}
 }

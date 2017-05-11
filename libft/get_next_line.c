@@ -15,8 +15,6 @@
 static void			ft_put(char *tmp_str, char **str, char *heap)
 {
 	*str = ft_strjoin(tmp_str, heap);
-	free(tmp_str);
-	tmp_str = NULL;
 }
 
 static int			ft_check(int ret, char **line)
@@ -75,7 +73,6 @@ int					get_next_line(int const fd, char **line)
 	heap = ft_strnew(BUFF_SIZE);
 	ft_bzero(heap, BUFF_SIZE);
 	ret = read_file(fd, heap, &str[fd], line);
-	free(heap);
 	if (ret != 0 || str[fd] == NULL || str[fd][0] == '\0')
 		return (ft_check(ret, line));
 	*line = str[fd];

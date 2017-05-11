@@ -71,3 +71,14 @@ void				dir_arg(t_top *x, char *path)
 	else
 		comp_matrix_r(x, matrix);
 }
+
+void				print_name(struct stat filestat, char *file, int i)
+{
+	lstat(file, &filestat);
+	if (S_ISDIR(filestat.st_mode) && i == 0)
+		ft_printfcolor("%s\n", file, 94);
+	if (S_ISDIR(filestat.st_mode) && i == 1)
+		ft_printfcolor("%s -> %s\n", file, 94, get_link(file), 39);
+	else
+		ft_printf("%s\n", file);
+}

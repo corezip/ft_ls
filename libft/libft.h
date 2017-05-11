@@ -236,5 +236,8 @@ int					ll_uns(unsigned long long int x, int flag, int z);
 int					print_s_negative(t_head *x);
 int					print_s_positive(t_head *x);
 int					get_next_line(int const fd, char **line);
+void				ft_printfcolor(const char *format, ...);
+void				putcstr(char const *s, size_t col);
+void				set_color(int c);
 
 #endif
