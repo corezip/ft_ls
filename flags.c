@@ -145,4 +145,5 @@ void		flag_zero(t_top *x)
 	x->flag.f = 0;
 	x->type.l = 0;
 	x->flag.error = 0;
+	x->dir.i = 0;
 }

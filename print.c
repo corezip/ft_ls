@@ -45,7 +45,7 @@ void				print_basic_t(t_top *x, char **matrix, char **times)
 	}
 	x->type.j = -1;
 	while (matrix[++x->type.j] != NULL)
-		ft_printf("%s\n", matrix[x->type.j]);
+		print_basic_color(matrix[x->type.j]);
 }
 
 /*
@@ -113,8 +113,8 @@ int					print_value_recu(char *file, char *path)
 	if (i == 0 && !(S_ISDIR(filestat.st_mode)))
 		ft_printf("%s %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12), file);
 	else if (i == 1)
-		ft_printfcolor("%s %s -> %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12),
-			39, file, 34, get_link(tmp), 31);
+		ft_printfcolor("%s %s -> %s\n", ft_strsub(ctime(&filestat.st_ctime),
+			4, 12), 39, file, 34, get_link(tmp), 31);
 	else
 		ft_printfcolor("%s %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12),
 			39, file, 34);
@@ -147,8 +147,8 @@ int					print_value_ls(char *file)
 	if (i == 0 && !(S_ISDIR(filestat.st_mode)))
 		ft_printf("%s %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12), file);
 	else if (i == 1)
-		ft_printfcolor("%s %s -> %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12),
-			39, file, 34, get_link(file), 31);
+		ft_printfcolor("%s %s -> %s\n", ft_strsub(ctime(&filestat.st_ctime),
+			4, 12), 39, file, 34, get_link(file), 31);
 	else
 		ft_printfcolor("%s %s\n", ft_strsub(ctime(&filestat.st_ctime), 4, 12),
 			39, file, 34);
@@ -173,5 +173,5 @@ void				print_basic(t_top *x, char *path)
 	matrix = matrix_sort(x, matrix);
 	x->type.j = -1;
 	while (matrix[++x->type.j] != NULL)
-		ft_printf("%s\n", matrix[x->type.j]);
+		print_basic_color(matrix[x->type.j]);
 }

@@ -45,7 +45,7 @@ void			print_basic_t_r(t_top *x, char **matrix, char **times)
 	}
 	x->type.j = -1;
 	while (matrix[++x->type.j] != NULL)
-		ft_printf("%s\n", matrix[x->type.j]);
+		print_basic_color(matrix[x->type.j]);
 }
 
 /*
@@ -117,7 +117,7 @@ void			print_r(t_top *x, char *path)
 	}
 	x->type.j = -1;
 	while (matrix[++x->type.j] != NULL)
-		ft_printf("%s\n", matrix[x->type.j]);
+		print_basic_color(matrix[x->type.j]);
 }
 
 /*

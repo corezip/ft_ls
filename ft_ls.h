@@ -141,5 +141,8 @@ void					no_sort(t_top *x, char *path);
 void					else_helper(struct stat filestat, t_top *x, char *file);
 int						get_file_error(struct stat filestat, char *file);
 void					print_name(struct stat filestat, char *file, int i);
+int						safe_lines(DIR **pdir, char *path, t_top *x);
+char					**safe_recurtion(t_top *x, char *path);
+void					print_basic_color(char *file);
 
 #endif

@@ -22,7 +22,7 @@ void				else_helper(struct stat filestat, t_top *x, char *file)
 			get_file2(file, x);
 	}
 	else
-		ft_printf("%s\n", file);
+		print_basic_color(file);
 }
 
 /*
@@ -42,14 +42,13 @@ void				get_file_t(char *file, t_top *x)
 	{
 		x->type.flag = 1;
 		x->type.j = -1;
-		x->flag.rr = 1;
 		x->flag.rec = 2;
 		recurtion_mexa_t(file, x, -1);
 	}
 	else if (x->flag.l > 0)
 		print_value_ls(file);
 	else
-		ft_printf("%s\n", file);
+		print_basic_color(file);
 }
 
 /*
@@ -77,30 +76,30 @@ void				ft_swapchar(char **a, char **b)
 
 char				**ft_make_matrix(int size, t_top *x, char *path)
 {
-	x->dir.matrix = (char **)malloc(sizeof(char *) * (size + 1));
-	if (!(x->dir.pdir = opendir(path)))
+	struct dirent	*pdirent;
+	DIR				*pdir;
+	char			**matrix;
+
+	matrix = (char **)malloc(sizeof(char *) * (size + 1));
+	if (safe_lines(&pdir, path, x) == 1)
+		return (matrix);
+	while ((pdirent = readdir(pdir)) != NULL)
 	{
-		x->flag.error = 1;
-		return (x->dir.matrix);
-	}
-	x->dir.i = 0;
-	while ((x->dir.pdirent = readdir(x->dir.pdir)) != NULL)
-	{
-		if (x->dir.pdirent->d_name[0] == '.' && x->flag.a >= 1)
+		if (pdirent->d_name[0] == '.' && x->flag.a >= 1)
 		{
-			x->dir.matrix[x->dir.i] = ft_strdup(x->dir.pdirent->d_name);
+			matrix[x->dir.i] = ft_strdup(pdirent->d_name);
 			x->dir.i++;
 		}
-		else if (x->dir.pdirent->d_name[0] != '.' && (x->flag.a == 0 ||
-			x->flag.a >= 1))
+		else if (pdirent->d_name[0] != '.' &&
+			(x->flag.a == 0 || x->flag.a >= 1))
 		{
-			x->dir.matrix[x->dir.i] = ft_strdup(x->dir.pdirent->d_name);
+			matrix[x->dir.i] = ft_strdup(pdirent->d_name);
 			x->dir.i++;
 		}
 	}
-	x->dir.matrix[x->dir.i] = NULL;
-	closedir(x->dir.pdir);
-	return (x->dir.matrix);
+	matrix[x->dir.i] = NULL;
+	closedir(pdir);
+	return (matrix);
 }
 
 /*
