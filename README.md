@@ -13,10 +13,10 @@ one of the most used commands among programmers, ls.
 ## How to use
 
 ```
-git clone https://github.com/corezip/ft_ls.git
-cd 42-ft_ls
-make
-./ft_ls [file ...]
+1.- git clone https://github.com/corezip/ft_ls.git
+2.- cd ft_ls
+3.- make
+4.- ./ft_ls [file ...]
 ```
 
 [here]: https://github.com/giacomoguiulfo/42-ft_ls/blob/master/pdfs/ft_ls.en.pdf
